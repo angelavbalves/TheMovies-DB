@@ -30,9 +30,11 @@ class TabBar: UITabBarController {
     
     func setupViewControllers() {
         let popularMovies = MovieListCollectionViewController()
+        let favoritesMovies = FavoritesMoviesViewController()
 
         viewControllers = [
-            createNavControllers(for: popularMovies, title: "Home", image: UIImage(named: "list_icon")!)
+            createNavControllers(for: popularMovies, title: "Home", image: UIImage(named: "list_icon")!),
+            createNavControllers(for: favoritesMovies, title: "Favorites", image: UIImage(systemName: "star.circle")!)
         ]
         
     }

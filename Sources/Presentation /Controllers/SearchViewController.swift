@@ -8,28 +8,38 @@
 import Foundation
 import UIKit
 
-class SearchViewController: UISearchController, UISearchBarDelegate, UISearchResultsUpdating {
+class SearchViewController: UISearchController {
+
+    // MARK: Properties
     var movies: [MoviesListItem] = []
     var filteredMovies: [MoviesListItem] = []
     var isSearching: Bool = false
-    
-//    override func loadView() {
-//        view = collectionViewMovie
-//    }
-    
+
+    // MARK: Life cycle
     override func viewDidLoad() {
         configureNavController()
         navigationItem.searchController = self
     }
-    
-    func updateSearchResults(for _: UISearchController) {}
 
-    func searchBarSearchButtonClicked(_: UISearchBar) {}
+    // MARK: Aux
+    func configureNavController() {
+        navigationController?.navigationBar.prefersLargeTitles = true
 
-    func searchBarTextDidEndEditing(_: UISearchBar) {
-        filteredMovies = movies
-//        collectionViewMovie.reloadCollectionView(filteredMovies: filteredMovies)
+        navigationController?.navigationBar.barTintColor = UIColor(red: 55 / 255, green: 120 / 255, blue: 250 / 255, alpha: 1)
+        navigationController?.navigationBar.tintColor = .black
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(handleShowSearchBar))
+        navigationItem.searchController?.hidesNavigationBarDuringPresentation = false
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
+
+    @objc func handleShowSearchBar() {
+        searchBar.showsCancelButton = true
+        searchBar.becomeFirstResponder()
+        searchBar.placeholder = "Search"
+    }
+}
+
+extension SearchViewController: UISearchBarDelegate {
 
     func searchBar(_: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty {
@@ -40,23 +50,12 @@ class SearchViewController: UISearchController, UISearchBarDelegate, UISearchRes
                 movie.originalTitle.lowercased().contains(text)
             }
         }
-//        collectionViewMovie.reloadCollectionView(filteredMovies: filteredMovies)
     }
-    
-    func configureNavController() {
-        navigationController?.navigationBar.prefersLargeTitles = true
-        
-        navigationController?.navigationBar.barTintColor = UIColor(red: 55 / 255, green: 120 / 255, blue: 250 / 255, alpha: 1)
-        navigationController?.navigationBar.tintColor = .black
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(handleShowSearchBar))
-        navigationItem.searchController?.hidesNavigationBarDuringPresentation = false
-        navigationController?.navigationBar.prefersLargeTitles = true
-    }
-    
-    @objc func handleShowSearchBar() {
-        searchBar.showsCancelButton = true
-        searchBar.becomeFirstResponder()
-        searchBar.placeholder = "Search"
+
+    func searchBarSearchButtonClicked(_: UISearchBar) {}
+
+    func searchBarTextDidEndEditing(_: UISearchBar) {
+        filteredMovies = movies
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
@@ -68,4 +67,9 @@ class SearchViewController: UISearchController, UISearchBarDelegate, UISearchRes
         searchBar.text = ""
         isSearching = false
     }
+}
+
+extension SearchViewController: UISearchResultsUpdating {
+
+    func updateSearchResults(for _: UISearchController) {}
 }
