@@ -26,10 +26,12 @@ class MovieListCollectionViewController: UIViewController {
         super.viewDidLoad()
         setupNavController()
         navigationItem.title = "Popular Movies"
-        navigationItem.searchController = SearchViewController()
+        let searchController = SearchViewController()
+        searchController.searchBar.delegate = self
+        navigationItem.searchController = searchController
     }
 
-    override func viewWillAppear(_ animated: Bool) {
+    override func viewWillAppear(_: Bool) {
         fetchMovies()
     }
 
@@ -62,4 +64,32 @@ extension MovieListCollectionViewController: MovieListDelegate {
         let controller = MovieDetailsViewController(details: movie)
         navigationController?.pushViewController(controller, animated: true)
     }
+}
+
+extension MovieListCollectionViewController: UISearchBarDelegate {
+
+    func searchBar(_: UISearchBar, textDidChange searchText: String) {
+        if searchText.isEmpty {
+            // Resetar o array
+            collectionViewMovie.resetMoviesList()
+        } else {
+            let text = searchText.lowercased()
+            // Filtra e devolve pra view o array filtrado através do método myView.updateViewWithSearchResults
+            let filteredMovies = collectionViewMovie.filteredMovies.filter { movie in
+                movie.originalTitle.lowercased().contains(text)
+            }
+            collectionViewMovie.updateViewWithSearchResults(filteredMovies)
+
+    }
+
+    func searchBarSearchButtonClicked(_: UISearchBar) {
+        // Resign first responder para esconder o teclado
+    }
+
+    func searchBarCancelButtonClicked(_: UISearchBar) {
+        // Fazer alguma ação quando o botao for clicado, por exemplo, resetar o array
+        // de filmes filtrados na myView
+        collectionViewMovie.resetMoviesList()
+    }
+}
 }

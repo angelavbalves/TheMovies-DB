@@ -12,7 +12,7 @@ class MovieListCollectionView: UIView {
 
     // MARK: Properties
     private var movies: [MoviesListItem] = []
-    private var filteredMovies: [MoviesListItem] = [] {
+    private(set) var filteredMovies: [MoviesListItem] = [] {
         didSet {
             collectionView.reloadData()
         }
@@ -50,6 +50,15 @@ class MovieListCollectionView: UIView {
         setupConstraints()
     }
 
+    func updateViewWithSearchResults(_ results: [MoviesListItem]) {
+        filteredMovies = results
+    }
+
+    func resetMoviesList() {
+        filteredMovies = movies
+        collectionView.reloadData()
+    }
+
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             collectionView.widthAnchor.constraint(equalTo: widthAnchor),
@@ -58,8 +67,8 @@ class MovieListCollectionView: UIView {
     }
 
     func reloadCollectionView(filteredMovies: [MoviesListItem]) {
+        movies = filteredMovies
         self.filteredMovies = filteredMovies
-        collectionView.reloadData()
     }
 }
 

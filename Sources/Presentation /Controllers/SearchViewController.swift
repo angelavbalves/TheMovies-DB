@@ -13,7 +13,6 @@ class SearchViewController: UISearchController {
     // MARK: Properties
     var movies: [MoviesListItem] = []
     var filteredMovies: [MoviesListItem] = []
-    var isSearching: Bool = false
 
     // MARK: Life cycle
     override func viewDidLoad() {
@@ -39,37 +38,10 @@ class SearchViewController: UISearchController {
     }
 }
 
-extension SearchViewController: UISearchBarDelegate {
-
-    func searchBar(_: UISearchBar, textDidChange searchText: String) {
-        if searchText.isEmpty {
-            filteredMovies = movies
-        } else {
-            let text = searchText.lowercased()
-            filteredMovies = filteredMovies.filter { movie in
-                movie.originalTitle.lowercased().contains(text)
-            }
-        }
-    }
-
-    func searchBarSearchButtonClicked(_: UISearchBar) {}
-
-    func searchBarTextDidEndEditing(_: UISearchBar) {
-        filteredMovies = movies
-    }
-
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        navigationItem.titleView = nil
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search,
-                                                            target: self,
-                                                            action: #selector(handleShowSearchBar))
-        searchBar.showsCancelButton = false
-        searchBar.text = ""
-        isSearching = false
-    }
-}
-
 extension SearchViewController: UISearchResultsUpdating {
 
-    func updateSearchResults(for _: UISearchController) {}
+    func updateSearchResults(for _: UISearchController) {
+        guard let text = searchBar.text else { return }
+        print(text)
+    }
 }
