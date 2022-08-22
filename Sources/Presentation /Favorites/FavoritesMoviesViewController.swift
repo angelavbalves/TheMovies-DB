@@ -12,7 +12,7 @@ protocol FavoritesMoviesDelegate {
     func userDidTapOnFavoriteMovie(_ movie: MoviesListItem)
 }
 
-class FavoritesMoviesViewController: UIViewController {
+class FavoritesMoviesViewController: TMViewController {
 
     // MARK: Properties
     private lazy var favoriteMovieView = FavoritesMoviesView(delegate: self)
