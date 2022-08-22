@@ -72,6 +72,8 @@ class MovieDetailsView: UIView {
     private let posterPath: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
+        image.layer.cornerRadius = 8.0
+        image.clipsToBounds = true
         return image
     }()
 

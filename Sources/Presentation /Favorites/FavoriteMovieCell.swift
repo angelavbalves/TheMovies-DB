@@ -26,10 +26,22 @@ class FavoriteMovieCell: UITableViewCell {
     }
 
     // MARK: Views
+    private var totalStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.spacing = 12
+        stackView.alignment = .center
+
+        return stackView
+    }()
+
     private var poster: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        
+        imageView.layer.cornerRadius = 8.0
+        imageView.clipsToBounds = true
+
         return imageView
     }()
     
@@ -37,6 +49,7 @@ class FavoriteMovieCell: UITableViewCell {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
+        stackView.spacing = 10
         
         return stackView
     }()
@@ -77,8 +90,11 @@ class FavoriteMovieCell: UITableViewCell {
     }
     
     private func addViews() {
-        addSubview(poster)
-        addSubview(infoStackView)
+        addSubview(totalStackView)
+        totalStackView.addArrangedSubview(UIView())
+        totalStackView.addArrangedSubview(poster)
+        totalStackView.addArrangedSubview(infoStackView)
+        totalStackView.addArrangedSubview(UIView())
         infoStackView.addArrangedSubview(titleLabel)
         infoStackView.addArrangedSubview(separator)
         infoStackView.addArrangedSubview(overview)
@@ -86,19 +102,13 @@ class FavoriteMovieCell: UITableViewCell {
     
     private func buildConstraintsCell() {
         NSLayoutConstraint.activate([
-            poster.topAnchor.constraint(equalTo: topAnchor, constant: 16),
-            poster.trailingAnchor.constraint(equalTo: infoStackView.leadingAnchor, constant: -4),
-            poster.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16),
-            poster.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
-            poster.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.85),
-            poster.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * 0.3),
-            
-            infoStackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16),
-            infoStackView.leadingAnchor.constraint(equalTo: poster.trailingAnchor, constant: 8),
-            infoStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16),
-            infoStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -8),
-            
-            titleLabel.bottomAnchor.constraint(equalTo: separator.topAnchor, constant: -6),
+            totalStackView.topAnchor.constraint(equalTo: topAnchor),
+            totalStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            totalStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            totalStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+
+            poster.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.85),
+            poster.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.3)
         ])
     }
 }
