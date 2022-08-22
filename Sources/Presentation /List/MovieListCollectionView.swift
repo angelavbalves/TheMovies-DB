@@ -12,6 +12,7 @@ class MovieListCollectionView: UIView {
 
     // MARK: Properties
     private var movies: [MoviesListItem] = []
+    private var isLoadingMoreMovies = false
     private(set) var filteredMovies: [MoviesListItem] = [] {
         didSet {
             collectionView.reloadData()
@@ -68,7 +69,25 @@ class MovieListCollectionView: UIView {
 
     func reloadCollectionView(filteredMovies: [MoviesListItem]) {
         movies = filteredMovies
-        self.filteredMovies = filteredMovies
+        self.filteredMovies += filteredMovies
+        isLoadingMoreMovies = false
+    }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let height = scrollView.frame.size.height
+        let distanceFromBottom = contentHeight - offsetY
+
+        if
+            isLoadingMoreMovies == false,
+            contentHeight > height,
+            distanceFromBottom < height
+        {
+            isLoadingMoreMovies = true
+            delegate?.fetchMovies()
+            print(filteredMovies.count)
+        }
     }
 }
 
@@ -113,3 +132,5 @@ extension MovieListCollectionView: UICollectionViewDelegateFlowLayout {
         UIEdgeInsets(top: 25, left: 15, bottom: 15, right: 15)
     }
 }
+
+
