@@ -10,12 +10,14 @@ import UIKit
 protocol MovieListDelegate {
     func userDidTapOnMovie(_ movie: MoviesListItem)
     func userDidTapOnFavoriteButton(_ movie: MoviesListItem)
+    func fetchMovies()
 }
 
-class MovieListCollectionViewController: UIViewController {
+class MovieListCollectionViewController: TMViewController {
 
     // MARK: Properties
     private lazy var collectionViewMovie = MovieListCollectionView(delegate: self)
+    private var currentPage = 1
 
     // MARK: Life cycle
     override func loadView() {
@@ -43,13 +45,16 @@ class MovieListCollectionViewController: UIViewController {
     }
 
     func fetchMovies() {
-        Service.getAllMovies { result in
+        loadingView.show()
+        Service.getMovies(endpoint: ApiEndpoints.movies(page: currentPage)) { (result: Result<MoviesResponse, MovieErrorState>) in
             switch result {
-            case let .success(moviesResult):
-                DispatchQueue.main.async { [weak self] in
-                    self?.collectionViewMovie.reloadCollectionView(filteredMovies: moviesResult.results.map(MoviesListItem.init))
-                }
-            case .failure: return
+                case let .success(moviesResult):
+                    DispatchQueue.main.async { [weak self] in
+                        self?.collectionViewMovie.reloadCollectionView(filteredMovies: moviesResult.results.map(MoviesListItem.init))
+                        self?.currentPage += 1
+                        self?.loadingView.hide()
+                    }
+                case .failure: return
             }
         }
     }
@@ -70,26 +75,19 @@ extension MovieListCollectionViewController: UISearchBarDelegate {
 
     func searchBar(_: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty {
-            // Resetar o array
             collectionViewMovie.resetMoviesList()
         } else {
             let text = searchText.lowercased()
-            // Filtra e devolve pra view o array filtrado através do método myView.updateViewWithSearchResults
             let filteredMovies = collectionViewMovie.filteredMovies.filter { movie in
                 movie.originalTitle.lowercased().contains(text)
             }
             collectionViewMovie.updateViewWithSearchResults(filteredMovies)
+        }
 
-    }
+        func searchBarSearchButtonClicked(_: UISearchBar) {}
 
-    func searchBarSearchButtonClicked(_: UISearchBar) {
-        // Resign first responder para esconder o teclado
+        func searchBarCancelButtonClicked(_: UISearchBar) {
+            collectionViewMovie.resetMoviesList()
+        }
     }
-
-    func searchBarCancelButtonClicked(_: UISearchBar) {
-        // Fazer alguma ação quando o botao for clicado, por exemplo, resetar o array
-        // de filmes filtrados na myView
-        collectionViewMovie.resetMoviesList()
-    }
-}
 }
