@@ -107,10 +107,10 @@ class MovieListCell: UICollectionViewCell {
     // MARK: Aux
     func updateButtonState(isSelected: Bool) {
         if isSelected {
-            let buttonSymbolFill = UIImage(systemName: "star.fill")
+            let buttonSymbolFill = UIImage(systemName: "star.fill")?.withRenderingMode(.alwaysOriginal)
             favoriteButton.setImage(buttonSymbolFill, for: .normal)
         } else {
-            let buttonSymbol = UIImage(systemName: "star")
+            let buttonSymbol = UIImage(systemName: "star")?.withRenderingMode(.alwaysOriginal)
             favoriteButton.setImage(buttonSymbol, for: .normal)
         }
     }
