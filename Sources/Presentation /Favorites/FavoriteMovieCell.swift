@@ -7,6 +7,8 @@
 
 import Foundation
 import UIKit
+import TinyConstraints
+import Kingfisher
 
 class FavoriteMovieCell: UITableViewCell {
 
@@ -41,6 +43,7 @@ class FavoriteMovieCell: UITableViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = 8.0
         imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFit
 
         return imageView
     }()
@@ -85,8 +88,9 @@ class FavoriteMovieCell: UITableViewCell {
     // MARK: Aux
     func setupView(for movie: MoviesListItem) {
         titleLabel.text = movie.originalTitle
-        poster.downloadImage(from: URL(string: "https://image.tmdb.org/t/p/w500\(movie.poster_path)")!)
         overview.text = movie.overview
+        let url = URL(string: "https://image.tmdb.org/t/p/w500\(movie.poster_path)")
+        poster.kf.setImage(with: url)
     }
     
     private func addViews() {
@@ -101,14 +105,7 @@ class FavoriteMovieCell: UITableViewCell {
     }
     
     private func buildConstraintsCell() {
-        NSLayoutConstraint.activate([
-            totalStackView.topAnchor.constraint(equalTo: topAnchor),
-            totalStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            totalStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            totalStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-
-            poster.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.85),
-            poster.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.3)
-        ])
+        totalStackView.edgesToSuperview()
+        poster.width(frame.width * 0.3)
     }
 }

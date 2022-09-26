@@ -7,6 +7,8 @@
 
 import Foundation
 import UIKit
+import TinyConstraints
+import Kingfisher
 
 class MovieListCell: UICollectionViewCell {
 
@@ -117,9 +119,9 @@ class MovieListCell: UICollectionViewCell {
 
     func setup(for movie: MoviesListItem) {
         titleMovie.text = movie.originalTitle
-        imageView.downloadImage(from: URL(string: "https://image.tmdb.org/t/p/w500\(movie.poster_path)")!)
         self.movie = movie
-
+        let url = URL(string: "https://image.tmdb.org/t/p/w500\(movie.poster_path)")
+        imageView.kf.setImage(with: url)
         movieIsFavorite = MovieDataSource.sharedInstance.checkMovieInCoreDataFor(id: movie.id)
     }
 
@@ -133,28 +135,8 @@ class MovieListCell: UICollectionViewCell {
     }
 
     func buildCellConstraints() {
-        NSLayoutConstraint.activate([
-            stackViewCell.topAnchor.constraint(equalTo: topAnchor, constant: 8),
-            stackViewCell.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -6),
-            stackViewCell.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -2),
-            stackViewCell.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 6),
+        stackViewCell.edgesToSuperview(insets: .top(8) + .left(6) + .right(6) + .bottom(2), usingSafeArea: true)
 
-            imageView.heightAnchor.constraint(equalToConstant: frame.height * 0.75),
-
-        ])
-    }
-}
-
-extension UIImageView {
-    func downloadImage(from url: URL) {
-        let session = URLSession.shared.dataTask(with: url) { data, _, _ in
-            if let data = data {
-                let image = UIImage(data: data)
-                DispatchQueue.main.async { [weak self] in
-                    self?.image = image
-                }
-            }
-        }
-        session.resume()
+        imageView.height(frame.height * 0.75)
     }
 }

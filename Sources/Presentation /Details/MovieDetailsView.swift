@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import Kingfisher
 
 class MovieDetailsView: UIView {
 
@@ -107,9 +108,10 @@ class MovieDetailsView: UIView {
     // MARK: Aux
     func setupView() {
         title.text = movieDetails.originalTitle
-        posterPath.downloadImage(from: URL(string: "https://image.tmdb.org/t/p/w500\(movieDetails.poster_path)")!)
         realeaseDate.text = movieDetails.release_date
         overview.text = movieDetails.overview
+        let url = URL(string: "https://image.tmdb.org/t/p/w500\(movieDetails.poster_path)")
+        posterPath.kf.setImage(with: url)
     }
 
     private func addViews() {

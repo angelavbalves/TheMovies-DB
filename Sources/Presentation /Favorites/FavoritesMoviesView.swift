@@ -59,6 +59,7 @@ class FavoritesMoviesView: UIView {
         movies = favoritesMovies
         tableView.reloadData()
     }
+
 }
 
 extension FavoritesMoviesView: UITableViewDataSource {

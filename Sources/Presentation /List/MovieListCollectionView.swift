@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import TinyConstraints
 
 class MovieListCollectionView: UIView {
 
@@ -24,7 +25,6 @@ class MovieListCollectionView: UIView {
     // MARK: Views
     private lazy var collectionView: UICollectionView = {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-        cv.translatesAutoresizingMaskIntoConstraints = false
         cv.delegate = self
         cv.dataSource = self
         return cv
@@ -61,10 +61,7 @@ class MovieListCollectionView: UIView {
     }
 
     private func setupConstraints() {
-        NSLayoutConstraint.activate([
-            collectionView.widthAnchor.constraint(equalTo: widthAnchor),
-            collectionView.heightAnchor.constraint(equalTo: heightAnchor),
-        ])
+        collectionView.edgesToSuperview()
     }
 
     func reloadCollectionView(filteredMovies: [MoviesListItem]) {
