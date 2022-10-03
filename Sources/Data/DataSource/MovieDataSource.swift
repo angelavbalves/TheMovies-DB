@@ -39,7 +39,6 @@ class MovieDataSource {
 
         do {
             try context.save()
-            print("favorite movie saved")
         } catch {
             print("favorite movie not saved")
         }
@@ -90,10 +89,9 @@ class MovieDataSource {
         // Saving the Delete operation
         do {
             try managedContext.save()
-            print("deleted")
 
         } catch {
-            print("Failed saving")
+            print("Failed delete")
         }
     }
 

@@ -7,15 +7,21 @@
 
 import Foundation
 import UIKit
+import SwiftUI
 
-class MovieDetailsViewController: UIViewController {
+class MovieDetailsViewController: TMViewController {
 
     // MARK: Properties
     private let movieDetails: MoviesListItem
     private var isSelected: Bool = false
+    private var currentPage = 1
 
     // MARK: Views
-    private lazy var detailsView = MovieDetailsView(details: movieDetails)
+    private lazy var detailsView = MovieDetailsView(details: movieDetails,
+                                                    didTapOnSimilarMovie: didTapOnSimilarMovieAction(_:),
+                                                    fetchMoreSimilarMovies: fetchSimiliarMovies
+    )
+
     private lazy var favoriteButton = UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: self, action: #selector(buttonSelected))
 
     // MARK: Init
@@ -39,6 +45,7 @@ class MovieDetailsViewController: UIViewController {
         super.viewDidLoad()
         isSelected = MovieDataSource.sharedInstance.checkMovieInCoreDataFor(id: movieDetails.id)
         updateButtonState(isSelected: isSelected)
+        fetchSimiliarMovies()
     }
 
     // MARK: Action
@@ -54,7 +61,7 @@ class MovieDetailsViewController: UIViewController {
         }
     }
 
-    // MARK: Aux
+    // MARK: - Aux
     func updateButtonState(isSelected: Bool) {
         if isSelected {
             let buttonSymbolFill = UIImage(systemName: "star.fill")
@@ -64,4 +71,24 @@ class MovieDetailsViewController: UIViewController {
             favoriteButton.image = buttonSymbol
         }
     }
-}
+
+    func fetchSimiliarMovies() {
+        loadingView.show()
+        Service.getMovies(endpoint: ApiEndpoints.similarMovies(movieId: movieDetails.id, page: currentPage)) { (result: Result<MoviesResponse, MovieErrorState>) in
+            switch result {
+                case let .success(moviesResult):
+                    DispatchQueue.main.async { [weak self] in
+                        self?.detailsView.setupTableView(with: moviesResult.results.map(MoviesListItem.init))
+                        self?.currentPage += 1
+                        self?.loadingView.hide()
+                }
+                case .failure: return
+            }
+        }
+    }
+
+    func didTapOnSimilarMovieAction(_ movie: MoviesListItem) {
+        let controller = MovieDetailsViewController(details: movie)
+        navigationController?.pushViewController(controller, animated: true)
+    }
+ }

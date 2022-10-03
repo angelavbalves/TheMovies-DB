@@ -13,7 +13,7 @@ class Service {
     static func getMovies<T: Decodable>(endpoint: Endpoint, page: Int = 1, _ completion: @escaping (Result<T, MovieErrorState>) -> Void) {
 
         if let url = makeUrlFrom(endpoint: endpoint) {
-            let task = URLSession.shared.dataTask(with: url) { data, response, _ in
+            let task = URLSession.shared.dataTask(with: url) { data, response, error in
                 guard let data = data else { return }
 
                 if let response = response as? HTTPURLResponse {
@@ -27,6 +27,7 @@ class Service {
                         case 300...399:
                             return
                         case 400...499:
+                            print(response.debugDescription)
                             completion(.failure(.badRequest))
                             return
                         case 500...599:

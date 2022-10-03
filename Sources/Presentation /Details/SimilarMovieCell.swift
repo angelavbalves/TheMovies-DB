@@ -1,19 +1,19 @@
 //
-//  MovieFavoriteCell.swift
+//  SimilarMovieCell.swift
 //  TheMoviesDB3
 //
-//  Created by Angela Alves on 10/06/22.
+//  Created by Angela Alves on 26/09/22.
 //
 
 import Foundation
-import UIKit
-import TinyConstraints
 import Kingfisher
+import TinyConstraints
+import UIKit
 
-class FavoriteMovieCell: UITableViewCell {
+class SimilarMovieCell: UITableViewCell {
 
     // MARK: Properties
-    static let identifer = "idCellFavorite"
+    static let identifer = "idSimilarMovie"
 
     // MARK: Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -47,16 +47,16 @@ class FavoriteMovieCell: UITableViewCell {
 
         return imageView
     }()
-    
+
     private var infoStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.spacing = 10
-        
+
         return stackView
     }()
-    
+
     private var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -66,17 +66,17 @@ class FavoriteMovieCell: UITableViewCell {
 
         return label
     }()
-    
+
     private var overview: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 3
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = .white
-        
+
         return label
     }()
-    
+
     private let separator: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -86,14 +86,14 @@ class FavoriteMovieCell: UITableViewCell {
     }()
 
     // MARK: Aux
-    func setupView(for movie: MoviesListItem) {
+    func setupCell(for movie: MoviesListItem) {
         titleLabel.text = movie.originalTitle
         overview.text = movie.overview
         let url = URL(string: "https://image.tmdb.org/t/p/w500\(movie.poster_path)")
         poster.kf.indicatorType = .activity
         poster.kf.setImage(with: url)
     }
-    
+
     private func addViews() {
         addSubview(totalStackView)
         totalStackView.addArrangedSubview(UIView())
@@ -104,7 +104,7 @@ class FavoriteMovieCell: UITableViewCell {
         infoStackView.addArrangedSubview(separator)
         infoStackView.addArrangedSubview(overview)
     }
-    
+
     private func buildConstraintsCell() {
         totalStackView.edgesToSuperview()
         poster.width(frame.width * 0.3)

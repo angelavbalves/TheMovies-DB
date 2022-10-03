@@ -5,17 +5,38 @@
 //  Created by Angela Alves on 06/06/22.
 //
 
+import CoreAudio
 import Foundation
-import UIKit
 import Kingfisher
+import TinyConstraints
+import UIKit
 
-class MovieDetailsView: UIView {
+class MovieDetailsView: UIView, UIScrollViewDelegate {
 
     // MARK: Properties
     private let movieDetails: MoviesListItem
+    private var similarMovies: [MoviesListItem] = [] {
+        didSet { tableViewHeight.constant = tableViewContentSize }
+    }
+    private let didTapOnSimilarMovie: (_ movie: MoviesListItem) -> Void
+    private let fetchMoreSimilarMovies: () -> Void
+    private var isLoadingMoreSimilarMovies = false
+
+    // MARK: Constants
+    private let rowHeight = 200.0
+    private lazy var tableViewHeight: NSLayoutConstraint = similarMoviesTableView.height(tableViewContentSize)
+    private var tableViewContentSize: Double {
+        let moviesCount = similarMovies.count
+        return Double(moviesCount) * rowHeight
+    }
 
     // MARK: Init
-    init(details: MoviesListItem) {
+    init(details: MoviesListItem,
+         didTapOnSimilarMovie: @escaping (_ movie: MoviesListItem) -> Void,
+         fetchMoreSimilarMovies: @escaping () -> Void)
+    {
+        self.didTapOnSimilarMovie = didTapOnSimilarMovie
+        self.fetchMoreSimilarMovies = fetchMoreSimilarMovies
         movieDetails = details
         super.init(frame: .zero)
         backgroundColor = Constants.Color.pinkRed
@@ -29,52 +50,51 @@ class MovieDetailsView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: Views
+    // MARK: - Aux
+    func setupTableView(with similarMovies: [MoviesListItem]) {
+        self.similarMovies += similarMovies
+        similarMoviesTableView.reloadData()
+        isLoadingMoreSimilarMovies = false
+    }
+
+    private func setupView() {
+        title.text = movieDetails.originalTitle
+        realeaseDate.text = movieDetails.release_date
+        overview.text = movieDetails.overview
+        let url = URL(string: "https://image.tmdb.org/t/p/w500\(movieDetails.poster_path)")
+        posterImageView.kf.indicatorType = .activity
+        posterImageView.kf.setImage(with: url)
+    }
+
+    // MARK: - Views
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.delegate = self
         return scrollView
-    }()
-
-    private lazy var contentView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-
-        return view
     }()
 
     private lazy var detailsStackView: UIStackView = {
         let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.spacing = 8
         return stackView
     }()
 
-    private lazy var imageStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        return stackView
-    }()
-
     private var title: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 22)
         label.numberOfLines = 0
         label.textColor = .white
-        label.text = "Title Movie"
 
         return label
     }()
 
-    private let posterPath: UIImageView = {
+    private let posterImageView: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
         image.layer.cornerRadius = 8.0
         image.clipsToBounds = true
+        image.contentMode = .scaleAspectFit
         return image
     }()
 
@@ -105,47 +125,87 @@ class MovieDetailsView: UIView {
         return label
     }()
 
-    // MARK: Aux
-    func setupView() {
-        title.text = movieDetails.originalTitle
-        realeaseDate.text = movieDetails.release_date
-        overview.text = movieDetails.overview
-        let url = URL(string: "https://image.tmdb.org/t/p/w500\(movieDetails.poster_path)")
-        posterPath.kf.setImage(with: url)
-    }
+    lazy var similarMoviesTableView: UITableView = {
+        let tv = UITableView()
+        tv.backgroundColor = .red
+        tv.isScrollEnabled = false
+        tv.register(SimilarMovieCell.self, forCellReuseIdentifier: SimilarMovieCell.identifer)
+        tv.delegate = self
+        tv.dataSource = self
+        tv.rowHeight = rowHeight
+        return tv
+    }()
 
     private func addViews() {
         addSubview(scrollView)
-        scrollView.addSubview(contentView)
-        contentView.addSubview(detailsStackView)
+        scrollView.addSubview(detailsStackView)
+        scrollView.addSubview(similarMoviesTableView)
+
+        detailsStackView.addArrangedSubview(posterImageView)
         detailsStackView.addArrangedSubview(title)
-        imageStackView.addArrangedSubview(posterPath)
-        detailsStackView.addArrangedSubview(imageStackView)
         detailsStackView.addArrangedSubview(realeaseDate)
         detailsStackView.addArrangedSubview(separator)
         detailsStackView.addArrangedSubview(overview)
     }
 
     private func buildConstraintsView() {
-        NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: topAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            scrollView.widthAnchor.constraint(equalTo: widthAnchor),
+        // Scroll view
+        scrollView.edgesToSuperview(usingSafeArea: true)
 
-            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            contentView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
-            contentView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+        // Details
+        detailsStackView.leading(to: safeAreaLayoutGuide, offset: 16)
+        detailsStackView.trailing(to: safeAreaLayoutGuide, offset: -16)
 
-            detailsStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
-            detailsStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            detailsStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            detailsStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
+        detailsStackView.top(to: scrollView)
+        posterImageView.widthToSuperview()
+        posterImageView.height(255)
 
-            posterPath.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.9),
-            posterPath.heightAnchor.constraint(equalTo: posterPath.widthAnchor, multiplier: 1.2)
+        // Similar movies
+        similarMoviesTableView.widthToSuperview()
+        similarMoviesTableView.topToBottom(of: detailsStackView)
+        similarMoviesTableView.bottom(to: scrollView)
+    }
 
-        ])
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let height = scrollView.frame.size.height
+        let distanceFromBottom = contentHeight - offsetY
+
+        if
+            isLoadingMoreSimilarMovies == false,
+            contentHeight > height,
+            distanceFromBottom < height
+        {
+            isLoadingMoreSimilarMovies = true
+            fetchMoreSimilarMovies()
+        }
+    }
+}
+
+// MARK: - Data source
+extension MovieDetailsView: UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        1
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return similarMovies.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: SimilarMovieCell.identifer, for: indexPath) as! SimilarMovieCell
+        let similarMovie = similarMovies[indexPath.row]
+        cell.setupCell(for: similarMovie)
+        cell.selectionStyle = .none
+        return cell
+    }
+}
+
+// MARK: - Delegate
+extension MovieDetailsView: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let similarMovieSelected = similarMovies[indexPath.row]
+        didTapOnSimilarMovie(similarMovieSelected)
     }
 }

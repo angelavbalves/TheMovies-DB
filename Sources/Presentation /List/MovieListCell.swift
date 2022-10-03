@@ -121,6 +121,7 @@ class MovieListCell: UICollectionViewCell {
         titleMovie.text = movie.originalTitle
         self.movie = movie
         let url = URL(string: "https://image.tmdb.org/t/p/w500\(movie.poster_path)")
+        imageView.kf.indicatorType = .activity
         imageView.kf.setImage(with: url)
         movieIsFavorite = MovieDataSource.sharedInstance.checkMovieInCoreDataFor(id: movie.id)
     }
@@ -136,7 +137,6 @@ class MovieListCell: UICollectionViewCell {
 
     func buildCellConstraints() {
         stackViewCell.edgesToSuperview(insets: .top(8) + .left(6) + .right(6) + .bottom(2), usingSafeArea: true)
-
         imageView.height(frame.height * 0.75)
     }
 }

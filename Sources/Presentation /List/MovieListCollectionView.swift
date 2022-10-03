@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import UIKit
 import TinyConstraints
+import UIKit
 
 class MovieListCollectionView: UIView {
 
@@ -19,7 +19,6 @@ class MovieListCollectionView: UIView {
             collectionView.reloadData()
         }
     }
-
     private var delegate: MovieListDelegate?
 
     // MARK: Views
@@ -83,7 +82,6 @@ class MovieListCollectionView: UIView {
         {
             isLoadingMoreMovies = true
             delegate?.fetchMovies()
-            print(filteredMovies.count)
         }
     }
 }
@@ -129,5 +127,3 @@ extension MovieListCollectionView: UICollectionViewDelegateFlowLayout {
         UIEdgeInsets(top: 25, left: 15, bottom: 15, right: 15)
     }
 }
-
-

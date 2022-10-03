@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import TinyConstraints
 import UIKit
 
 class FavoritesMoviesView: UIView {
@@ -47,21 +48,16 @@ class FavoritesMoviesView: UIView {
     }
 
     private func constraintsTableView() {
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-        ])
+        tableView.edgesToSuperview()
     }
 
     func reloadTableView(favoritesMovies: [MoviesListItem]) {
         movies = favoritesMovies
         tableView.reloadData()
     }
-
 }
 
+// MARK: - Data Source
 extension FavoritesMoviesView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         movies.count
@@ -71,7 +67,7 @@ extension FavoritesMoviesView: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "idCellFavorite", for: indexPath) as! FavoriteMovieCell
         let movie = movies[indexPath.row]
         cell.setupView(for: movie)
-
+        cell.selectionStyle = .none
         return cell
     }
 
@@ -96,8 +92,8 @@ extension FavoritesMoviesView: UITableViewDataSource {
     }
 }
 
+// MARK: - Delegate
 extension FavoritesMoviesView: UITableViewDelegate {
-
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let movie = movies[indexPath.row]
         delegate?.userDidTapOnFavoriteMovie(movie)

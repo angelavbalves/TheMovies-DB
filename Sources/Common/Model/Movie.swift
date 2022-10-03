@@ -18,11 +18,17 @@ struct MoviesResponseItem: Codable {
     let original_language: String
     let original_title: String
     let overview: String
-    let poster_path: String
+    let poster_path: String?
     let release_date: String
     let title: String
+    let genres: [Genre]?
+    let genres_id: [Int]?
 }
 
+struct Genre: Codable {
+    let id: Int
+    let name: String
+}
 
 struct MoviesList {
     let movies: [MoviesListItem]
@@ -49,10 +55,12 @@ struct MoviesListItem {
         self.id = response.id
         self.originalTitle = response.original_title
         self.overview = response.overview
-        self.poster_path = response.poster_path
+        self.poster_path = response.poster_path ?? ""
         self.release_date = response.release_date
     }
 }
+
+
 
 
 
