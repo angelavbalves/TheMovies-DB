@@ -30,7 +30,6 @@ class FavoriteMovieCell: UITableViewCell {
     // MARK: Views
     private var totalStackView: UIStackView = {
         let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.spacing = 12
         stackView.alignment = .center
@@ -40,7 +39,6 @@ class FavoriteMovieCell: UITableViewCell {
 
     private var poster: UIImageView = {
         let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = 8.0
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFit
@@ -50,7 +48,6 @@ class FavoriteMovieCell: UITableViewCell {
     
     private var infoStackView: UIStackView = {
         let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.spacing = 10
         
@@ -59,7 +56,6 @@ class FavoriteMovieCell: UITableViewCell {
     
     private var titleLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 18)
         label.numberOfLines = 0
         label.textColor = .white
@@ -69,7 +65,6 @@ class FavoriteMovieCell: UITableViewCell {
     
     private var overview: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 3
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = .white
@@ -79,7 +74,6 @@ class FavoriteMovieCell: UITableViewCell {
     
     private let separator: UIView = {
         let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .white
         view.heightAnchor.constraint(equalToConstant: 1).isActive = true
         return view
@@ -96,17 +90,15 @@ class FavoriteMovieCell: UITableViewCell {
     
     private func addViews() {
         addSubview(totalStackView)
-        totalStackView.addArrangedSubview(UIView())
         totalStackView.addArrangedSubview(poster)
         totalStackView.addArrangedSubview(infoStackView)
-        totalStackView.addArrangedSubview(UIView())
         infoStackView.addArrangedSubview(titleLabel)
         infoStackView.addArrangedSubview(separator)
         infoStackView.addArrangedSubview(overview)
     }
     
     private func buildConstraintsCell() {
-        totalStackView.edgesToSuperview()
+        totalStackView.edgesToSuperview(insets: .vertical(12) + .horizontal(12))
         poster.width(frame.width * 0.3)
     }
 }

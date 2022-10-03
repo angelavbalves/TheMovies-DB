@@ -91,7 +91,6 @@ class MovieDetailsView: UIView, UIScrollViewDelegate {
 
     private let posterImageView: UIImageView = {
         let image = UIImageView()
-        image.translatesAutoresizingMaskIntoConstraints = false
         image.layer.cornerRadius = 8.0
         image.clipsToBounds = true
         image.contentMode = .scaleAspectFit
@@ -100,7 +99,6 @@ class MovieDetailsView: UIView, UIScrollViewDelegate {
 
     private let realeaseDate: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 16)
         label.textColor = .white
 
@@ -109,7 +107,6 @@ class MovieDetailsView: UIView, UIScrollViewDelegate {
 
     private let separator: UIView = {
         let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .white
         view.heightAnchor.constraint(equalToConstant: 1).isActive = true
         return view
@@ -117,7 +114,6 @@ class MovieDetailsView: UIView, UIScrollViewDelegate {
 
     private let overview: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 20)
         label.numberOfLines = 0

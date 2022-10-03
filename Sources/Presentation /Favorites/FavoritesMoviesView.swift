@@ -17,21 +17,22 @@ class FavoritesMoviesView: UIView {
 
     // MARK: Views
     private lazy var tableView: UITableView = {
-        let cv = UITableView(frame: .zero, style: UITableView.Style.plain)
-        cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.delegate = self
-        cv.dataSource = self
-        return cv
+        let tv = UITableView(frame: .zero, style: UITableView.Style.plain)
+        tv.delegate = self
+        tv.dataSource = self
+        tv.rowHeight = 200
+        tv.register(FavoriteMovieCell.self, forCellReuseIdentifier: FavoriteMovieCell.identifer)
+        tv.backgroundColor = Constants.Color.pinkRed
+        return tv
     }()
 
     // MARK: Init
     init(delegate: FavoritesMoviesDelegate) {
         self.delegate = delegate
         super.init(frame: .zero)
-        setupTableView()
-        constraintsTableView()
-        tableView.register(FavoriteMovieCell.self, forCellReuseIdentifier: FavoriteMovieCell.identifer)
-        tableView.backgroundColor = Constants.Color.pinkRed
+//        setupTableView()
+        buildTableView()
+
     }
 
     @available(*, unavailable)
@@ -40,14 +41,13 @@ class FavoritesMoviesView: UIView {
     }
 
     // MARK: Aux
-    private func setupTableView() {
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.rowHeight = 200
-        addSubview(tableView)
-    }
+//    private func setupTableView() {
 
-    private func constraintsTableView() {
+//        addSubview(tableView)
+//    }
+
+    private func buildTableView() {
+        addSubview(tableView)
         tableView.edgesToSuperview()
     }
 

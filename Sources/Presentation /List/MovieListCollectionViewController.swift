@@ -43,6 +43,17 @@ class MovieListCollectionViewController: TMViewController {
         navigationController?.navigationBar.barTintColor = Constants.Color.pink
         navigationController?.navigationBar.tintColor = .black
     }
+}
+
+extension MovieListCollectionViewController: MovieListDelegate {
+    func userDidTapOnFavoriteButton(_ movie: MoviesListItem) {
+        MovieDataSource.sharedInstance.saveFavoriteMovie(movie: movie)
+    }
+
+    func userDidTapOnMovie(_ movie: MoviesListItem) {
+        let controller = MovieDetailsViewController(details: movie)
+        navigationController?.pushViewController(controller, animated: true)
+    }
 
     func fetchMovies() {
         loadingView.show()
@@ -57,18 +68,6 @@ class MovieListCollectionViewController: TMViewController {
                 case .failure: return
             }
         }
-    }
-
-}
-
-extension MovieListCollectionViewController: MovieListDelegate {
-    func userDidTapOnFavoriteButton(_ movie: MoviesListItem) {
-        MovieDataSource.sharedInstance.saveFavoriteMovie(movie: movie)
-    }
-
-    func userDidTapOnMovie(_ movie: MoviesListItem) {
-        let controller = MovieDetailsViewController(details: movie)
-        navigationController?.pushViewController(controller, animated: true)
     }
 }
 
