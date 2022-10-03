@@ -7,15 +7,15 @@
 
 import Foundation
 import UIKit
+import TinyConstraints
 
 class TMLoadingView: UIView {
 
-    // MARK: Init
+    // MARK: - Init
     init() {
         super.init(frame: .zero)
         backgroundColor = .white
-        addActiveIndicator()
-        setupConstraints()
+        setupView()
         isHidden = true
     }
 
@@ -24,20 +24,13 @@ class TMLoadingView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: View
+    // MARK: - View
     let activeIndicator = UIActivityIndicatorView(style: .large)
 
-    // MARK: Aux
-    private func addActiveIndicator() {
+    // MARK: - Aux
+    private func setupView() {
         addSubview(activeIndicator)
-    }
-
-    private func setupConstraints() {
-        activeIndicator.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            activeIndicator.centerYAnchor.constraint(equalTo: centerYAnchor),
-            activeIndicator.centerXAnchor.constraint(equalTo: centerXAnchor)
-        ])
+        activeIndicator.centerInSuperview()
     }
 
     func show() {

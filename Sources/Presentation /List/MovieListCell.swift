@@ -6,13 +6,13 @@
 //
 
 import Foundation
-import UIKit
-import TinyConstraints
 import Kingfisher
+import TinyConstraints
+import UIKit
 
 class MovieListCell: UICollectionViewCell {
 
-    // MARK: Properties
+    // MARK: - Properties
     static let identifer = "idCellHome"
     private var movie: MoviesListItem?
     private var movieIsFavorite = false {
@@ -21,10 +21,9 @@ class MovieListCell: UICollectionViewCell {
         }
     }
 
-    // MARK: Init
+    // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
-
         addSubviewsCell()
         buildCellConstraints()
     }
@@ -34,7 +33,7 @@ class MovieListCell: UICollectionViewCell {
         fatalError()
     }
 
-    // MARK: Life Cycle
+    // MARK: - Life Cycle
     override func layoutSubviews() {
         super.layoutSubviews()
 
@@ -46,33 +45,26 @@ class MovieListCell: UICollectionViewCell {
         updateButtonState(isSelected: movieIsFavorite)
     }
 
-    // MARK: Views
+    // MARK: - Views
     var imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-
         return imageView
     }()
 
     var stackViewCell: UIStackView = {
         let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
-
         return stackView
     }()
 
     var titleStackView: UIStackView = {
         let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
-
         return stackView
     }()
 
     var titleMovie: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 16)
         label.numberOfLines = 0
         return label
@@ -83,13 +75,11 @@ class MovieListCell: UICollectionViewCell {
         button.setContentHuggingPriority(.required, for: .horizontal)
         let buttonSymbol = UIImage(systemName: "star")
         button.setImage(buttonSymbol, for: .normal)
-
         button.addTarget(self, action: #selector(buttonSelected(_:)), for: .touchUpInside)
-
         return button
     }()
 
-    // MARK: Action
+    // MARK: - Action
     @objc func buttonSelected(_: UIButton) {
         if movieIsFavorite {
             if let movie = movie {
@@ -106,7 +96,7 @@ class MovieListCell: UICollectionViewCell {
         }
     }
 
-    // MARK: Aux
+    // MARK: - Aux
     func updateButtonState(isSelected: Bool) {
         if isSelected {
             let buttonSymbolFill = UIImage(systemName: "star.fill")?.withRenderingMode(.alwaysOriginal)

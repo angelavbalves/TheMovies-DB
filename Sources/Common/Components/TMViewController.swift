@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import TinyConstraints
 
 class TMViewController: UIViewController {
 
@@ -16,18 +17,12 @@ class TMViewController: UIViewController {
     // MARK: Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.addSubview(loadingView)
-        setupConstraintsView()
+        configureView()
     }
 
     // MARK: Aux
-    func setupConstraintsView() {
-        loadingView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            loadingView.topAnchor.constraint(equalTo: view.topAnchor),
-            loadingView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            loadingView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            loadingView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-        ])
+    func configureView() {
+        view.addSubview(loadingView)
+        loadingView.edgesToSuperview()
     }
 }
