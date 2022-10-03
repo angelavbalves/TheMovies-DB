@@ -58,6 +58,7 @@ class MovieListCollectionViewController: TMViewController {
             }
         }
     }
+
 }
 
 extension MovieListCollectionViewController: MovieListDelegate {
