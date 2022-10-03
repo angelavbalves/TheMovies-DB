@@ -14,7 +14,7 @@ class TMLoadingView: UIView {
     // MARK: - Init
     init() {
         super.init(frame: .zero)
-        backgroundColor = .white
+        backgroundColor = Constants.Color.rose
         setupView()
         isHidden = true
     }
