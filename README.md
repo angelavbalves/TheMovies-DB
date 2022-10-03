@@ -14,10 +14,10 @@ Até esse momento, o filtro disponível é acerca do título do filme.
 
 
 ### 🆕 Nova funcionalidade
-O aplicativo agora conta com a listagem de filmes similares ao que for selecionado na tela. Nessa funcionalidade também é possível ir para tela detalhes do filme similar ao clicar nele.
-| --- |
-| <video src="https://user-images.githubusercontent.com/101536863/193650826-6e9f877e-8fc7-49fc-9d01-18a41aa4aed6.mp4">|
+O aplicativo agora conta com a listagem de filmes similares ao que for selecionado na tela. <br> Nessa funcionalidade também é possível ir para tela detalhes do filme similar ao clicar nele.
 
+| <video src="https://user-images.githubusercontent.com/101536863/193650826-6e9f877e-8fc7-49fc-9d01-18a41aa4aed6.mp4">|
+| --- |
 
 
 
