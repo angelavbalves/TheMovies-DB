@@ -21,7 +21,7 @@ class MovieListCollectionView: UIView {
     }
     private var delegate: MovieListDelegate?
 
-    // MARK: Views
+    // MARK: - Views
     private lazy var collectionView: UICollectionView = {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         cv.delegate = self
