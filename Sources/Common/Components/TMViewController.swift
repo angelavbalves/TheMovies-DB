@@ -11,18 +11,21 @@ import TinyConstraints
 
 class TMViewController: UIViewController {
 
-    // MARK: Properties
+    // MARK: - Properties
     var loadingView = TMLoadingView()
+    var errorView = TMErrorView()
 
-    // MARK: Life Cycle
+    // MARK: -  Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureView()
+        configureViews()
     }
 
-    // MARK: Aux
-    func configureView() {
+    // MARK: - Aux
+    func configureViews() {
         view.addSubview(loadingView)
+        view.addSubview(errorView)
         loadingView.edgesToSuperview()
+        errorView.edgesToSuperview()
     }
 }
