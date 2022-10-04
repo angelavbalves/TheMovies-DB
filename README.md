@@ -19,11 +19,13 @@ O aplicativo agora conta com a listagem de filmes similares ao que for seleciona
 | <video src="https://user-images.githubusercontent.com/101536863/193650826-6e9f877e-8fc7-49fc-9d01-18a41aa4aed6.mp4">|
 | --- |
 
+### ⚠ Telas de erro
+  <img src="https://user-images.githubusercontent.com/101536863/193844740-8ab6f533-c2e5-4cbf-b965-4f25004a0fa3.png" width="400"> <img src="https://user-images.githubusercontent.com/101536863/193844758-2ed79f97-8454-4db6-8a6e-3c191e2fe9c1.png" width="400"> 
+ | --- |
+ 
+<img src="https://user-images.githubusercontent.com/101536863/193845753-d599eebe-5136-4b02-940f-5069ded94f48.png" width="400"> <img src="https://user-images.githubusercontent.com/101536863/193845733-3eceb77a-3791-4153-baa3-ecaec35894ae.png" width="400"> 
+| --- |
 
-
-
-
-
-
-
+<img src="https://user-images.githubusercontent.com/101536863/193846704-24c6c71f-1132-454f-ae7c-96e2e0a77c93.png" width="400"> <img src="https://user-images.githubusercontent.com/101536863/193846813-7dddb876-9b90-4468-9b80-aa2e0904a3b0.png" width="400"> 
+| --- |
 
