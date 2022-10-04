@@ -15,7 +15,6 @@ class Service {
         if let url = makeUrlFrom(endpoint: endpoint) {
             let task = URLSession.shared.dataTask(with: url) { data, response, error in
                 guard let data = data else { return }
-
                 if let response = response as? HTTPURLResponse {
                     switch response.statusCode {
                         case 200...299:
@@ -25,14 +24,20 @@ class Service {
                                 completion(.failure(.generic))
                             }
                         case 300...399:
+                            print(response.debugDescription)
+                            completion(.failure(.redirectError))
                             return
                         case 400...499:
                             print(response.debugDescription)
-                            completion(.failure(.badRequest))
+                            completion(.failure(.clientError))
                             return
                         case 500...599:
+                            print(response.debugDescription)
+                            completion(.failure(.serverError))
                             return
                         default:
+                            print(response.debugDescription)
+                            completion(.failure(.noConnection))
                             return
                     }
                 }
