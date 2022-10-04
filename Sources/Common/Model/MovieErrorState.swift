@@ -9,7 +9,8 @@ import Foundation
 
 enum MovieErrorState: Swift.Error {
     case generic
-    case movieNotFound
+    case clientError
     case noConnection
-    case badRequest
+    case serverError
+    case redirectError
 }
