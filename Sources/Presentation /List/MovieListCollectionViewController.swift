@@ -65,7 +65,13 @@ extension MovieListCollectionViewController: MovieListDelegate {
                         self?.currentPage += 1
                         self?.loadingView.hide()
                     }
-                case .failure: return
+                case let .failure(errorState):
+                    DispatchQueue.main.async { [weak self] in
+                        self?.loadingView.hide()
+                        self?.errorView.show(errorState,
+                                             retryAction: self?.fetchMovies
+                        )
+                    }
             }
         }
     }

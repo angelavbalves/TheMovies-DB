@@ -18,8 +18,7 @@ class MovieDetailsViewController: TMViewController {
     // MARK: Views
     private lazy var detailsView = MovieDetailsView(details: movieDetails,
                                                     didTapOnSimilarMovie: didTapOnSimilarMovieAction(_:),
-                                                    fetchMoreSimilarMovies: fetchSimiliarMovies
-    )
+                                                    fetchMoreSimilarMovies: fetchSimiliarMovies)
 
     private lazy var favoriteButton = UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: self, action: #selector(buttonSelected))
 
@@ -80,8 +79,13 @@ class MovieDetailsViewController: TMViewController {
                         self?.detailsView.setupTableView(with: moviesResult.results.map(MoviesListItem.init))
                         self?.currentPage += 1
                         self?.loadingView.hide()
-                }
-                case .failure: return
+                    }
+                case let .failure(errorState):
+                    DispatchQueue.main.async { [weak self] in
+                        self?.errorView.show(errorState,
+                                             retryAction: self?.fetchSimiliarMovies
+                        )
+                    }
             }
         }
     }
@@ -90,4 +94,4 @@ class MovieDetailsViewController: TMViewController {
         let controller = MovieDetailsViewController(details: movie)
         navigationController?.pushViewController(controller, animated: true)
     }
- }
+}
