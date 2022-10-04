@@ -26,6 +26,6 @@ O aplicativo agora conta com a listagem de filmes similares ao que for seleciona
 <img src="https://user-images.githubusercontent.com/101536863/193845753-d599eebe-5136-4b02-940f-5069ded94f48.png" width="400"> <img src="https://user-images.githubusercontent.com/101536863/193845733-3eceb77a-3791-4153-baa3-ecaec35894ae.png" width="400"> 
 | --- |
 
-<img src="https://user-images.githubusercontent.com/101536863/193846704-24c6c71f-1132-454f-ae7c-96e2e0a77c93.png" width="400"> <img src="https://user-images.githubusercontent.com/101536863/193846813-7dddb876-9b90-4468-9b80-aa2e0904a3b0.png" width="400"> 
+<img src="https://user-images.githubusercontent.com/101536863/193846813-7dddb876-9b90-4468-9b80-aa2e0904a3b0.png" width="400"> <img src="https://user-images.githubusercontent.com/101536863/193846704-24c6c71f-1132-454f-ae7c-96e2e0a77c93.png" width="400"> 
 | --- |
 
