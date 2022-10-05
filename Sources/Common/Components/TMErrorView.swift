@@ -9,18 +9,16 @@ import Foundation
 import TinyConstraints
 import UIKit
 
-class TMErrorView: UIView {
+class TMErrorView: TMView {
 
     // MARK: - Properties
     var retryAction: (() -> Void)?
 
     // MARK: - Init
-    init() {
-        super.init(frame: .zero)
-        backgroundColor = Constants.Color.rose
+    override init() {
+        super.init()
+        backgroundColor = Theme.currentTheme.colors.backgroundColorCell.rawValue
         isHidden = true
-        addSubviews()
-        configureConstraints()
     }
 
     @available(*, unavailable)
@@ -68,14 +66,14 @@ class TMErrorView: UIView {
     }()
 
     // MARK: - Aux
-    func addSubviews() {
+    override func configureSubviews() {
         addSubview(totalStackView)
         totalStackView.addArrangedSubview(imageView)
         totalStackView.addArrangedSubview(errorLabel)
         totalStackView.addArrangedSubview(refreshButton)
     }
 
-    func configureConstraints() {
+    override func configureConstraints() {
         totalStackView.centerInSuperview(usingSafeArea: true)
         refreshButton.width(180)
         imageView.heightToWidth(of: imageView)

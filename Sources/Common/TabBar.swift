@@ -13,9 +13,9 @@ class TabBar: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
-        UITabBar.appearance().barTintColor = .systemBackground
-        tabBar.barTintColor = .label
+        view.backgroundColor = Theme.currentTheme.colors.tabBarColor.rawValue
+        tabBar.tintColor = Theme.currentTheme.colors.textColor.rawValue
+        UITabBar.appearance().barTintColor = Theme.currentTheme.colors.tabBarColor.rawValue
         setupViewControllers()
     }
     
@@ -33,7 +33,7 @@ class TabBar: UITabBarController {
         let favoritesMovies = FavoritesMoviesViewController()
 
         viewControllers = [
-            createNavControllers(for: popularMovies, title: "Home", image: UIImage(named: "list_icon")!),
+            createNavControllers(for: popularMovies, title: "Home", image: UIImage(systemName: "house.fill")!),
             createNavControllers(for: favoritesMovies, title: "Favorites", image: UIImage(systemName: "star.circle")!)
         ]
         

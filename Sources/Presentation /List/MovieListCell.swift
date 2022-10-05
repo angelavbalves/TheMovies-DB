@@ -36,8 +36,7 @@ class MovieListCell: UICollectionViewCell {
     // MARK: - Life Cycle
     override func layoutSubviews() {
         super.layoutSubviews()
-
-        backgroundColor = Constants.Color.rose
+        backgroundColor = Theme.currentTheme.colors.backgroundColorCell.rawValue
     }
 
     override func prepareForReuse() {
@@ -112,7 +111,9 @@ class MovieListCell: UICollectionViewCell {
         self.movie = movie
         let url = URL(string: "https://image.tmdb.org/t/p/w500\(movie.poster_path)")
         imageView.kf.indicatorType = .activity
-        imageView.kf.setImage(with: url)
+        imageView.kf.setImage(with: url,
+                           placeholder: UIImage(named: "movieNotFound")!
+        )
         movieIsFavorite = MovieDataSource.sharedInstance.checkMovieInCoreDataFor(id: movie.id)
     }
 

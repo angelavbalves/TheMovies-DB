@@ -15,19 +15,21 @@ protocol MovieListDelegate {
 
 class MovieListCollectionViewController: TMViewController {
 
-    // MARK: Properties
+    // MARK: - Properties
     private lazy var collectionViewMovie = MovieListCollectionView(delegate: self)
     private var currentPage = 1
+    private var isDarkModeSelected = false
 
-    // MARK: Life cycle
+    // MARK: - Life cycle
     override func loadView() {
         view = collectionViewMovie
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupNavController()
+        updateImageButtonWhen(isSelected: true)
         navigationItem.title = "Popular Movies"
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
         let searchController = SearchViewController()
         searchController.searchBar.delegate = self
         navigationItem.searchController = searchController
@@ -37,14 +39,36 @@ class MovieListCollectionViewController: TMViewController {
         fetchMovies()
     }
 
-    // MARK: Aux
-    func setupNavController() {
-        navigationController?.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: nil)
-        navigationController?.navigationBar.barTintColor = Constants.Color.pink
-        navigationController?.navigationBar.tintColor = .black
+    // MARK: - Aux
+    func updateImageButtonWhen(isSelected: Bool) {
+        if isSelected {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "moon"),
+                                                               style: .done,
+                                                               target: self,
+                                                               action: #selector(darkModeAction))
+            isDark = true
+        } else {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "sun.max"),
+                                                               style: .done,
+                                                               target: self,
+                                                               action: #selector(darkModeAction))
+            isDark = false
+        }
+    }
+
+    @objc func darkModeAction() {
+        configureStyle(for: appTheme)
+        if isDark {
+            updateImageButtonWhen(isSelected: false)
+            view.window?.overrideUserInterfaceStyle = .dark
+        } else {
+            updateImageButtonWhen(isSelected: true)
+            view.window?.overrideUserInterfaceStyle = .light
+        }
     }
 }
 
+// MARK: - Delegate Collection View
 extension MovieListCollectionViewController: MovieListDelegate {
     func userDidTapOnFavoriteButton(_ movie: MoviesListItem) {
         MovieDataSource.sharedInstance.saveFavoriteMovie(movie: movie)
@@ -69,14 +93,14 @@ extension MovieListCollectionViewController: MovieListDelegate {
                     DispatchQueue.main.async { [weak self] in
                         self?.loadingView.hide()
                         self?.errorView.show(errorState,
-                                             retryAction: self?.fetchMovies
-                        )
+                                             retryAction: self?.fetchMovies)
                     }
             }
         }
     }
 }
 
+// MARK: - Delegate Search Bar
 extension MovieListCollectionViewController: UISearchBarDelegate {
 
     func searchBar(_: UISearchBar, textDidChange searchText: String) {

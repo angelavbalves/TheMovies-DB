@@ -23,8 +23,6 @@ class SearchViewController: UISearchController {
     // MARK: Aux
     func configureNavController() {
         navigationController?.navigationBar.prefersLargeTitles = true
-
-        navigationController?.navigationBar.barTintColor = UIColor(red: 55 / 255, green: 120 / 255, blue: 250 / 255, alpha: 1)
         navigationController?.navigationBar.tintColor = .black
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(handleShowSearchBar))
         navigationItem.searchController?.hidesNavigationBarDuringPresentation = false

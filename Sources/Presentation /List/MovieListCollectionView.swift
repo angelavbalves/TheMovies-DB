@@ -9,7 +9,7 @@ import Foundation
 import TinyConstraints
 import UIKit
 
-class MovieListCollectionView: UIView {
+class MovieListCollectionView: TMView {
 
     // MARK: Properties
     private var movies: [MoviesListItem] = []
@@ -29,25 +29,22 @@ class MovieListCollectionView: UIView {
         return cv
     }()
 
-    // MARK: Init
+    // MARK: - Init
     init(delegate: MovieListDelegate) {
         self.delegate = delegate
-        super.init(frame: .zero)
+        super.init()
         collectionView.register(MovieListCell.self, forCellWithReuseIdentifier: MovieListCell.identifer)
-        setupView()
-        collectionView.backgroundColor = Constants.Color.pinkRed
+        collectionView.backgroundColor = Theme.currentTheme.colors.backgroudColor.rawValue
         collectionView.allowsMultipleSelection = true
     }
 
-    @available(*, unavailable)
-    required init?(coder _: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    // MARK: - Aux
+    override func configureSubviews() {
+        addSubview(collectionView)
     }
 
-    // MARK: Aux
-    private func setupView() {
-        addSubview(collectionView)
-        setupConstraints()
+    override func configureConstraints() {
+        collectionView.edgesToSuperview()
     }
 
     func updateViewWithSearchResults(_ results: [MoviesListItem]) {
@@ -57,10 +54,6 @@ class MovieListCollectionView: UIView {
     func resetMoviesList() {
         filteredMovies = movies
         collectionView.reloadData()
-    }
-
-    private func setupConstraints() {
-        collectionView.edgesToSuperview()
     }
 
     func reloadCollectionView(filteredMovies: [MoviesListItem]) {

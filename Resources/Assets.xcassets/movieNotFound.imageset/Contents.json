@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "defaultimage.png",
+      "filename" : "movieNotFound.png",
       "idiom" : "universal",
       "scale" : "1x"
     },

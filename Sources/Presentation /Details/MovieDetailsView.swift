@@ -11,7 +11,7 @@ import Kingfisher
 import TinyConstraints
 import UIKit
 
-class MovieDetailsView: UIView, UIScrollViewDelegate {
+class MovieDetailsView: TMView, UIScrollViewDelegate {
 
     // MARK: Properties
     private let movieDetails: MoviesListItem
@@ -38,16 +38,8 @@ class MovieDetailsView: UIView, UIScrollViewDelegate {
         self.didTapOnSimilarMovie = didTapOnSimilarMovie
         self.fetchMoreSimilarMovies = fetchMoreSimilarMovies
         movieDetails = details
-        super.init(frame: .zero)
-        backgroundColor = Constants.Color.pinkRed
-        addViews()
+        super.init()
         setupView()
-        buildConstraintsView()
-    }
-
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: - Aux
@@ -63,7 +55,9 @@ class MovieDetailsView: UIView, UIScrollViewDelegate {
         overview.text = movieDetails.overview
         let url = URL(string: "https://image.tmdb.org/t/p/w500\(movieDetails.poster_path)")
         posterImageView.kf.indicatorType = .activity
-        posterImageView.kf.setImage(with: url)
+        posterImageView.kf.setImage(with: url,
+                           placeholder: UIImage(named: "movieNotFound")!
+        )
     }
 
     // MARK: - Views
@@ -129,10 +123,11 @@ class MovieDetailsView: UIView, UIScrollViewDelegate {
         tv.delegate = self
         tv.dataSource = self
         tv.rowHeight = rowHeight
+        tv.backgroundColor = Theme.currentTheme.colors.backgroudColor.rawValue
         return tv
     }()
 
-    private func addViews() {
+    override func configureSubviews() {
         addSubview(scrollView)
         scrollView.addSubview(detailsStackView)
         scrollView.addSubview(similarMoviesTableView)
@@ -144,15 +139,15 @@ class MovieDetailsView: UIView, UIScrollViewDelegate {
         detailsStackView.addArrangedSubview(overview)
     }
 
-    private func buildConstraintsView() {
+    override func configureConstraints() {
         // Scroll view
         scrollView.edgesToSuperview(usingSafeArea: true)
 
         // Details
+        detailsStackView.top(to: scrollView, offset: 16)
         detailsStackView.leading(to: safeAreaLayoutGuide, offset: 16)
         detailsStackView.trailing(to: safeAreaLayoutGuide, offset: -16)
 
-        detailsStackView.top(to: scrollView)
         posterImageView.widthToSuperview()
         posterImageView.height(255)
 
