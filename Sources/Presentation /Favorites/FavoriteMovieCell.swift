@@ -18,7 +18,7 @@ class FavoriteMovieCell: UITableViewCell {
     // MARK: Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        backgroundColor = Constants.Color.pinkRed
+        backgroundColor = Theme.currentTheme.colors.backgroudColor.rawValue
         addViews()
         buildConstraintsCell()
     }
@@ -85,7 +85,9 @@ class FavoriteMovieCell: UITableViewCell {
         overview.text = movie.overview
         let url = URL(string: "https://image.tmdb.org/t/p/w500\(movie.poster_path)")
         poster.kf.indicatorType = .activity
-        poster.kf.setImage(with: url)
+        poster.kf.setImage(with: url,
+                           placeholder: UIImage(named: "movieNotFound")!
+        )
     }
     
     private func addViews() {
