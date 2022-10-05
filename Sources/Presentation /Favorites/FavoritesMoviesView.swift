@@ -9,7 +9,7 @@ import Foundation
 import TinyConstraints
 import UIKit
 
-class FavoritesMoviesView: UIView {
+class FavoritesMoviesView: TMView {
 
     // MARK: Properties
     private var movies: [MoviesListItem] = []
@@ -22,32 +22,21 @@ class FavoritesMoviesView: UIView {
         tv.dataSource = self
         tv.rowHeight = 200
         tv.register(FavoriteMovieCell.self, forCellReuseIdentifier: FavoriteMovieCell.identifer)
-        tv.backgroundColor = Constants.Color.pinkRed
+        tv.backgroundColor = Theme.currentTheme.colors.backgroudColor.rawValue
         return tv
     }()
 
     // MARK: Init
     init(delegate: FavoritesMoviesDelegate) {
         self.delegate = delegate
-        super.init(frame: .zero)
-//        setupTableView()
-        buildTableView()
-
+        super.init()
     }
 
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    // MARK: Aux
-//    private func setupTableView() {
-
-//        addSubview(tableView)
-//    }
-
-    private func buildTableView() {
+    override func configureSubviews() {
         addSubview(tableView)
+    }
+
+    override func configureConstraints() {
         tableView.edgesToSuperview()
     }
 

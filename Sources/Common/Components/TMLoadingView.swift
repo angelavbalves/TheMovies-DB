@@ -9,13 +9,11 @@ import Foundation
 import UIKit
 import TinyConstraints
 
-class TMLoadingView: UIView {
+class TMLoadingView: TMView {
 
     // MARK: - Init
-    init() {
-        super.init(frame: .zero)
-        backgroundColor = Constants.Color.rose
-        setupView()
+    override init() {
+        super.init()
         isHidden = true
     }
 
@@ -28,7 +26,8 @@ class TMLoadingView: UIView {
     let activeIndicator = UIActivityIndicatorView(style: .large)
 
     // MARK: - Aux
-    private func setupView() {
+    override func configureSubviews() {
+        backgroundColor = Theme.currentTheme.colors.backgroundColorCell.rawValue
         addSubview(activeIndicator)
         activeIndicator.centerInSuperview()
     }
