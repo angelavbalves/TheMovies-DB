@@ -70,7 +70,7 @@ class MovieDetailsView: TMView, UIScrollViewDelegate {
     private lazy var detailsStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.spacing = 8
+        stackView.spacing = 12
         return stackView
     }()
 
@@ -190,6 +190,15 @@ extension MovieDetailsView: UITableViewDataSource {
         cell.setupCell(for: similarMovie)
         cell.selectionStyle = .none
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let label = UILabel()
+        label.text = "Similar movies"
+        label.textColor = Theme.currentTheme.colors.textColor.rawValue
+        label.textAlignment = .center
+        label.font = UIFont.boldSystemFont(ofSize: 22.0)
+        return label
     }
 }
 

@@ -38,8 +38,5 @@ class SearchViewController: UISearchController {
 
 extension SearchViewController: UISearchResultsUpdating {
 
-    func updateSearchResults(for _: UISearchController) {
-        guard let text = searchBar.text else { return }
-        print(text)
-    }
+    func updateSearchResults(for _: UISearchController) {}
 }
