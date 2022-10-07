@@ -11,5 +11,7 @@ protocol Endpoint {
     var host: String { get }
     var method: String { get }
     var path: String { get }
-    var token: String { get }
+//    var token: String { get }
+//    var textSearch: String? { get }
+    var query: [URLQueryItem] { get }
 }
