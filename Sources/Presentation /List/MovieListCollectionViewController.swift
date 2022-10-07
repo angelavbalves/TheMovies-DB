@@ -66,6 +66,30 @@ class MovieListCollectionViewController: TMViewController {
             view.window?.overrideUserInterfaceStyle = .light
         }
     }
+
+    func searchMovies(with searchBarText: String) {
+        loadingView.show()
+        Service.getMovies(endpoint: ApiEndpoints.searchMovies(page: currentPage, query: searchBarText)) { (result: Result<MoviesResponse, MovieErrorState>) in
+            switch result {
+                case let .success(moviesResult):
+                    DispatchQueue.main.async { [weak self] in
+                        let movieItems = moviesResult.results.map(MoviesListItem.init)
+                        if movieItems.isEmpty {
+                            self?.emptyView.show(title: "There aren't movies with this title here",
+                                                 image: UIImage(named: "invalidSearch")!)
+                        }
+                        self?.collectionViewMovie.updateViewWithSearchResults(movieItems)
+                        self?.loadingView.hide()
+                    }
+                case let .failure(errorState):
+                    DispatchQueue.main.async { [weak self] in
+                        self?.loadingView.hide()
+                        self?.errorView.show(errorState,
+                                             retryAction: self?.fetchMovies)
+                    }
+            }
+        }
+    }
 }
 
 // MARK: - Delegate Collection View
@@ -85,8 +109,9 @@ extension MovieListCollectionViewController: MovieListDelegate {
             switch result {
                 case let .success(moviesResult):
                     DispatchQueue.main.async { [weak self] in
-                        self?.collectionViewMovie.reloadCollectionView(filteredMovies: moviesResult.results.map(MoviesListItem.init))
+                        let movieItem = moviesResult.results.map(MoviesListItem.init)
                         self?.currentPage += 1
+                        self?.collectionViewMovie.reloadCollectionView(movies: movieItem)
                         self?.loadingView.hide()
                     }
                 case let .failure(errorState):
@@ -104,20 +129,24 @@ extension MovieListCollectionViewController: MovieListDelegate {
 extension MovieListCollectionViewController: UISearchBarDelegate {
 
     func searchBar(_: UISearchBar, textDidChange searchText: String) {
-        if searchText.isEmpty {
+        if searchText.isEmpty || searchText.count < 3 {
             collectionViewMovie.resetMoviesList()
         } else {
             let text = searchText.lowercased()
-            let filteredMovies = collectionViewMovie.filteredMovies.filter { movie in
+            let filteredMovies = collectionViewMovie.movies.filter { movie in
                 movie.originalTitle.lowercased().contains(text)
             }
-            collectionViewMovie.updateViewWithSearchResults(filteredMovies)
+            if filteredMovies.isEmpty {
+                searchMovies(with: text)
+            } else {
+                collectionViewMovie.updateViewWithSearchResults(filteredMovies)
+            }
         }
+        emptyView.hide()
+    }
 
-        func searchBarSearchButtonClicked(_: UISearchBar) {}
-
-        func searchBarCancelButtonClicked(_: UISearchBar) {
-            collectionViewMovie.resetMoviesList()
-        }
+    func searchBarCancelButtonClicked(_: UISearchBar) {
+        collectionViewMovie.resetMoviesList()
+        emptyView.hide()
     }
 }

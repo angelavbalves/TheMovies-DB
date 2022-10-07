@@ -12,8 +12,9 @@ import UIKit
 class MovieListCollectionView: TMView {
 
     // MARK: Properties
-    private var movies: [MoviesListItem] = []
+    private(set) var movies: [MoviesListItem] = []
     private var isLoadingMoreMovies = false
+    private var isFiltering = false
     private(set) var filteredMovies: [MoviesListItem] = [] {
         didSet {
             collectionView.reloadData()
@@ -49,16 +50,19 @@ class MovieListCollectionView: TMView {
 
     func updateViewWithSearchResults(_ results: [MoviesListItem]) {
         filteredMovies = results
+        isFiltering = true
+        collectionView.reloadData()
     }
 
     func resetMoviesList() {
         filteredMovies = movies
+        isFiltering = false
         collectionView.reloadData()
     }
 
-    func reloadCollectionView(filteredMovies: [MoviesListItem]) {
-        movies = filteredMovies
-        self.filteredMovies += filteredMovies
+    func reloadCollectionView(movies: [MoviesListItem]) {
+        self.movies = movies
+        filteredMovies += movies
         isLoadingMoreMovies = false
     }
 
@@ -69,7 +73,8 @@ class MovieListCollectionView: TMView {
         let distanceFromBottom = contentHeight - offsetY
 
         if
-            isLoadingMoreMovies == false,
+            !isFiltering,
+            !isLoadingMoreMovies,
             contentHeight > height,
             distanceFromBottom < height
         {
