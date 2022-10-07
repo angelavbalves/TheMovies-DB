@@ -47,6 +47,7 @@ class MovieListCell: UICollectionViewCell {
     // MARK: - Views
     var imageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
         return imageView
     }()
 
