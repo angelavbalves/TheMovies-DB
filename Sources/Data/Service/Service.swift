@@ -60,7 +60,7 @@ class Service {
         component.scheme = "https"
         component.host = endpoint.host
         component.path = endpoint.path
-        component.query = endpoint.token
+        component.queryItems = endpoint.query
         return component.url
     }
 
