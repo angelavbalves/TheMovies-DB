@@ -57,7 +57,7 @@ class FavoriteMovieCell: UITableViewCell {
     private var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 18)
-        label.numberOfLines = 0
+        label.numberOfLines = 3
         label.textColor = .white
 
         return label
@@ -65,7 +65,7 @@ class FavoriteMovieCell: UITableViewCell {
     
     private var overview: UILabel = {
         let label = UILabel()
-        label.numberOfLines = 3
+        label.numberOfLines = 0
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = .white
         

@@ -146,6 +146,7 @@ extension MovieListCollectionViewController: UISearchBarDelegate {
     }
 
     func searchBarCancelButtonClicked(_: UISearchBar) {
+        resignFirstResponder()
         collectionViewMovie.resetMoviesList()
         emptyView.hide()
     }
