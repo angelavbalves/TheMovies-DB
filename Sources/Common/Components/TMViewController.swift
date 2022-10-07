@@ -13,8 +13,9 @@ class TMViewController: UIViewController {
 
     // MARK: - Properties
     var isDark = false
-    var loadingView = TMLoadingView()
-    var errorView = TMErrorView()
+    let loadingView = TMLoadingView()
+    let errorView = TMErrorView()
+    let emptyView = TMEmptyView()
     var defaults = UserDefaults.standard
     var appTheme: AppTheme {
         get {
@@ -38,8 +39,10 @@ class TMViewController: UIViewController {
         view.backgroundColor = Theme.currentTheme.colors.backgroudColor.rawValue
         view.addSubview(loadingView)
         view.addSubview(errorView)
+        view.addSubview(emptyView)
         loadingView.edgesToSuperview()
         errorView.edgesToSuperview()
+        emptyView.edgesToSuperview()
     }
 
     func configureNavController() {
