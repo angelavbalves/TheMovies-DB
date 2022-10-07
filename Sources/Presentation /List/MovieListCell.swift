@@ -76,6 +76,7 @@ class MovieListCell: UICollectionViewCell {
         let buttonSymbol = UIImage(systemName: "star")
         button.setImage(buttonSymbol, for: .normal)
         button.addTarget(self, action: #selector(buttonSelected(_:)), for: .touchUpInside)
+        button.setContentCompressionResistancePriority(.required, for: .horizontal)
         return button
     }()
 
